@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  mongo:
+    image: mongo
+    restart: on-failure
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - type: volume
+        source: MONGO_DATA
+        target: /data/db
+      - type: volume
+        source: MONGO_CONFIG
+        target: /data/configdb
+    environment:
+      MONGO_INITDB_DATABASE: admin
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: database-lock-pass
+      ME_CONFIG_MONGODB_URL: mongodb://mongoadmin:database-lock-pass@host.docker.internal:27017
+
+volumes:
+  MONGO_DATA:
+    name: MONGO_DATA
+  MONGO_CONFIG:
+    name: MONGO_CONFIG

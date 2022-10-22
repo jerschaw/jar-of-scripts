@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  mongo-express:
+    image: mongo-express
+    container_name: mexpress
+    environment:
+      ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+      ME_CONFIG_MONGODB_AUTH_USERNAME: mongoadmin
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: database-lock-pass
+      ME_CONFIG_BASICAUTH_USERNAME: mexpress
+      ME_CONFIG_BASICAUTH_PASSWORD: mexpress
+      ME_CONFIG_MONGODB_SERVER: host.docker.internal/admin?directConnection=true
+    volumes:
+      - type: volume
+        source: MONGO_EXPRESS
+        target: /opt/mongo-express
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    networks: 
+      - mexpress-compose-network
+
+volumes:
+  MONGO_EXPRESS:
+    name: MONGO_EXPRESS
+
+networks: 
+  mexpress-compose-network:
+    driver: bridge
